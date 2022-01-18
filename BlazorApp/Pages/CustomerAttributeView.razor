@@ -1,37 +1,118 @@
 ﻿@page "/customerAttribute"
 @inject IConfiguration Configuration
 @using BlazorApp.Component;
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject ICustomerService service;
+@inject NavigationManager NavigationManager;
 
 <h3>CustomerAttributeView</h3>
 
-@if(model == null)
+@if (model == null)
 {
     <h4>Loading</h4>
-}else
+}
+else
 {
-    <div class="row">
+    <div class="row row1">
         <EditForm Model="@CustomerSearch" OnSubmit=@SeachForm>
             <div class="row">
-                <div class="col">
-                    <label>Attribute Master</label>
+                <div class="input-group">
+
                     <InputText class="form-control" @bind-Value="CustomerSearch.AttributeMaster"></InputText>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>Search</button>
                 </div>
 
-                <div class="col pt-4">
-                    <button type="submit" class="btn btn-secondary">Search</button>
-                </div>
+            </div>
 
-                <div class="col pt-4">
-                    <a href="/create" class="btn btn-primary"><i class="fas fa-plus"></i> Create</a>
+        </EditForm>
+    </div>
+
+    <div class="row">
+        <div class="col">
+
+            @*<a class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">ADD</a>*@
+            <div>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">ADD</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <h4 style="text-align:center" class="modal-title">Deatails</h4>
+                            <div class="modal-body">
+                                <EditForm Model="@customerCreate" OnValidSubmit="@SubmitCreate">
+                                    <DataAnnotationsValidator />
+                                    @*<ValidationSummary />*@
+                                    <div class="form-group">
+                                        <label for="AttributeMaster">Attribute Master</label>
+                                        <InputText class="form-control" @bind-Value="customerCreate.AttributeMaster"></InputText>
+                                        <ValidationMessage For="()=>customerCreate.AttributeMaster"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="AttributeValuesCode">Attribute Values Code</label>
+                                        <InputText class="form-control" @bind-Value="customerCreate.AttributeValuesCode"></InputText>
+                                        <ValidationMessage For="()=>customerCreate.AttributeValuesCode"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Description">Description</label>
+                                        <InputText class="form-control" @bind-Value="customerCreate.Description"></InputText>
+                                        <ValidationMessage For="()=>customerCreate.Description"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ShortName">ShortName</label>
+                                        <InputText class="form-control" @bind-Value="customerCreate.ShortName"></InputText>
+                                        <ValidationMessage For="()=>customerCreate.ShortName"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="Parent">Parent</label>
+                                        <InputText class="form-control" @bind-Value="customerCreate.Parent"></InputText>
+                                        <ValidationMessage For="()=>customerCreate.Parent"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="EffectiveDate">EffectiveDate</label>
+                                        <InputDate class="form-control" @bind-Value="customerCreate.EffectiveDate"></InputDate>
+                                        <ValidationMessage For="()=>customerCreate.EffectiveDate"></ValidationMessage>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ValidUntil">ValidUntil</label>
+                                        <InputDate TValue="DateTime?" class="form-control" @bind-Value="customerCreate.ValidUntil"></InputDate>
+                                        <ValidationMessage For="()=>customerCreate.ValidUntil"></ValidationMessage>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+
+                                </EditForm>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </EditForm>
+        </div>
+        <div class="col colright">
+            <div>
+                <a href="" class="btn btn-primary"> Import</a>
+            </div>
+            <div>
+                <DonwloadFile></DonwloadFile>
 
-        <DonwloadFile></DonwloadFile>
+            </div>
+        </div>
     </div>
-     
+
+
     <div class="row mt-4">
-            <table class="table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Attribute Master</th>
@@ -47,7 +128,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var item in model)
+                @foreach (var item in model)
                 {
                     <tr>
                         <td>@item.AttributeMaster</td>
@@ -67,10 +148,10 @@
                             <button class="btn btn-danger" @onclick="() => OnDeleteTask(item.Id)"><i class="fas fa-trash-alt"></i></button>
                         </td>
                         @*<td>
-                            <span class="icon icon-edit" @onclick="() => Edit_ClickAsync(item.Id)">
-                                                text
-                                            </span>
-                        </td>*@
+                                <span class="icon icon-edit" @onclick="() => Edit_ClickAsync(item.Id)">
+                                                    text
+                                                </span>
+                            </td>*@
                     </tr>
                 }
             </tbody>
@@ -83,8 +164,19 @@
     <Confirmation ConfirmationMessage="Are you sure to delete?"
                   ConfirmationTitle="Delete Task"
                   @ref="DeleteConfirmation"
-                  ConfirmationChanged="OnConfirmDeleteTask">                 
+                  ConfirmationChanged="OnConfirmDeleteTask">
     </Confirmation>
 }
+@code {
+    private CustomerAttributeModel customerCreate = new CustomerAttributeModel();
 
+    private async Task SubmitCreate(EditContext context)
+    {
+        var result = await service.Create(customerCreate);
+        if (result)
+        {
+            NavigationManager.NavigateTo("/customerAttribute");
+        }
+    }
+}
 

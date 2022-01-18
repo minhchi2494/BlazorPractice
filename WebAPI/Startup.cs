@@ -29,7 +29,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ExportService>();
-            string url = "server=LAPTOP-6D8AK342\\CHI;database=CustomerAttributeBlazor;uid=sa;pwd=123";
+            string url = "server=LAPTOP-E01MG43U\\SQLEXPRESS02;database=CustomerAttributeBlazor;uid=sa;pwd=123";
             services.AddDbContext<CustomerAttributeContext>(options =>
             {
                 options.UseSqlServer(url);
