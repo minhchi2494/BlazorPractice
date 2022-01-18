@@ -21,9 +21,13 @@ namespace WebAPI.Controllers
 
         //api/CustomerAttribute?name=
         [HttpGet]
-        public Task<List<CustomerAttributeModel>> getALl([FromQuery]CustomerSearch customerSearch)
+        public async Task<PagedList<CustomerAttributeModel>> getALl([FromQuery]CustomerSearch customerSearch)
         {
-            return _service.GetAll(customerSearch);
+            var pagedList = await _service.GetAll(customerSearch);
+            var items = pagedList.Items;
+            var result = new PagedList<CustomerAttributeModel>(items.ToList(),
+                pagedList.MetaData.TotalCount, pagedList.MetaData.CurrentPage, pagedList.MetaData.PageSize);
+            return result;
         }
 
         [HttpGet("{id}")]

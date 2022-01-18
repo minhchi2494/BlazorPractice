@@ -12,9 +12,9 @@
     <div class="row">
         <EditForm Model="@CustomerSearch" OnSubmit=@SeachForm>
             <div class="row">
-                <div class="col">
-                    <label>Attribute Master</label>
-                    <InputText class="form-control" @bind-Value="CustomerSearch.AttributeMaster"></InputText>
+                <div class="col pt-4">
+                    @*<label>Attribute Master</label>*@
+                    <InputText class="form-control" placeholder="Attribute Master ..." @bind-Value="CustomerSearch.AttributeMaster"></InputText>
                 </div>
 
                 <div class="col pt-4">
@@ -65,11 +65,6 @@
                         <td>
                             <button class="btn btn-danger" @onclick="() => OnDeleteTask(item.Id)"><i class="fas fa-trash-alt"></i></button>
                         </td>
-                        @*<td>
-                            <span class="icon icon-edit" @onclick="() => Edit_ClickAsync(item.Id)">
-                                                text
-                                            </span>
-                        </td>*@
                     </tr>
                 }
             </tbody>

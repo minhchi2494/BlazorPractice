@@ -36,6 +36,6 @@ namespace BlazorApp.Models
         public string Parent { get; set; }
 
         public DateTime EffectiveDate { get; set; } = DateTime.Now.AddDays(1);
-        public DateTime? ValidUntil { get; set; }
+        public DateTime? ValidUntil { get; set; } //cho phép null
     }
 }

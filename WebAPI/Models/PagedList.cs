@@ -14,7 +14,7 @@ namespace WebAPI.Models
             MetaData = new MetaData
             {
                 TotalCount = count,
-                pageSize = pageSize,
+                PageSize = pageSize,
                 CurrentPage = pageNumber,
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize),
             };

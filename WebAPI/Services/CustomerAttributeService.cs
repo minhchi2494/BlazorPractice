@@ -17,18 +17,30 @@ namespace WebAPI.Services
         }
 
 
-        public async Task<List<CustomerAttributeModel>> GetAll(CustomerSearch customerSearch)
+        public async Task<PagedList<CustomerAttributeModel>> GetAll(CustomerSearch customerSearch)
         {
             var result = _context.CustomerAttributeModels.ToList();
             if (!string.IsNullOrEmpty(customerSearch.AttributeMaster))
             {
                 result = result.Where(x=>x.AttributeMaster.ToLower().Contains(customerSearch.AttributeMaster.ToLower())).ToList();
-                return result;
+                var count = result.Count;
+                var data = result.OrderByDescending(x => x.AttributeMaster)
+                    .Skip((customerSearch.PageNumber - 1) * customerSearch.PageSize)
+                    .Take(customerSearch.PageSize)
+                    .ToList();
+                return new PagedList<CustomerAttributeModel>(data, count, customerSearch.PageNumber, customerSearch.PageSize);
             }
             else
             {
-                return result;
+                var count = result.Count;
+                var data = result.OrderByDescending(x => x.AttributeMaster)
+                    .Skip((customerSearch.PageNumber - 1) * customerSearch.PageSize)
+                    .Take(customerSearch.PageSize)
+                    .ToList();
+                return new PagedList<CustomerAttributeModel>(data, count, customerSearch.PageNumber, customerSearch.PageSize);
             }
+
+            
         }
 
         public async Task<CustomerAttributeModel> GetOne(int id)
