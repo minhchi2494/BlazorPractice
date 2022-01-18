@@ -1,6 +1,6 @@
 ﻿namespace WebAPI.Models
 {
-    public class CustomerSearch
+    public class CustomerSearch : PagingParameters
     {
         public string AttributeMaster { get; set; }
     }
