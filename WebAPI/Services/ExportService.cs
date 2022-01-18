@@ -58,6 +58,7 @@ namespace WebAPI.Services
             worksheet.Cell(1, 6).Value = "Parent";
             worksheet.Cell(1, 7).Value = "EffectiveDate";
             worksheet.Cell(1, 8).Value = "ValidUntil";
+
             for(int i = 1; i <= CustomerAttribute.customerAttributeModels.Count; i++)
             {
                 worksheet.Cell(i + 1, 1).Value = CustomerAttribute.customerAttributeModels[i - 1].Id;
@@ -69,6 +70,19 @@ namespace WebAPI.Services
                 worksheet.Cell(i + 1, 7).Value = CustomerAttribute.customerAttributeModels[i - 1].EffectiveDate;
                 worksheet.Cell(i + 1, 8).Value = CustomerAttribute.customerAttributeModels[i - 1].ValidUntil;
             }
+
+            //var a = CustomerAttributeContext.CustomerAttributeModels.ToList();
+            //for (int i = 1; i <= a.Count; i++)
+            //{
+            //    worksheet.Cell(i + 1, 1).Value = a[i - 1].Id;
+            //    worksheet.Cell(i + 1, 2).Value = a[i - 1].AttributeMaster;
+            //    worksheet.Cell(i + 1, 3).Value = a[i - 1].AttributeValuesCode;
+            //    worksheet.Cell(i + 1, 4).Value = a[i - 1].Description;
+            //    worksheet.Cell(i + 1, 5).Value = a[i - 1].ShortName;
+            //    worksheet.Cell(i + 1, 6).Value = a[i - 1].Parent;
+            //    worksheet.Cell(i + 1, 7).Value = a[i - 1].EffectiveDate;
+            //    worksheet.Cell(i + 1, 8).Value = a[i - 1].ValidUntil;
+            //}
         }
     }
 }
