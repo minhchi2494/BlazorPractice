@@ -20,7 +20,8 @@ namespace BlazorApp
 
             builder.Services.AddScoped<ICustomerService, CustomerService>();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["BackendApiUrl"]) });
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:48697") });
 
             await builder.Build().RunAsync();
         }
