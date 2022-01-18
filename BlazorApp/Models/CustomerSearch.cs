@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorApp.Models
 {
-    public class CustomerSearch
+    public class CustomerSearch : PagingParameters
     {
         public string AttributeMaster { get; set; }
     }
