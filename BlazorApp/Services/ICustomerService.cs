@@ -8,7 +8,7 @@ namespace BlazorApp.Services
 {
     public interface ICustomerService
     {
-        Task<List<CustomerAttributeModel>> getAll(CustomerSearch customerSearch);
+        Task<PagedList<CustomerAttributeModel>> getAll(CustomerSearch customerSearch);
 
         Task<CustomerAttributeModel> GetOne(int id);
 

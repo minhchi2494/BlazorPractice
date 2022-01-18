@@ -16,6 +16,7 @@ namespace BlazorApp.Pages
         [Inject]
         private ICustomerService _services { get; set; }
         private List<CustomerAttributeModel> model;
+        public MetaData MetaData { get; set; } = new MetaData();
         private CustomerSearch CustomerSearch = new CustomerSearch();
         protected Confirmation DeleteConfirmation { set; get; }
 
@@ -23,12 +24,14 @@ namespace BlazorApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            model = await _services.getAll(CustomerSearch);
+            //model = await _services.getAll(CustomerSearch);
+            await GetTasks();
         }
 
         private async Task SeachForm(EditContext context)
         {
-            model = await _services.getAll(CustomerSearch);
+            //model = await _services.getAll(CustomerSearch);
+            await GetTasks();
         }
 
         public void OnDeleteTask(int deleteId)
@@ -42,8 +45,22 @@ namespace BlazorApp.Pages
             if (deleteConfirmed)
             {
                 await _services.Delete(DeleteId);
-                model = await _services.getAll(CustomerSearch);
+                //model = await _services.getAll(CustomerSearch);
+                await GetTasks();
             }
+        }
+
+        private async Task GetTasks()
+        {
+            var pagingResponse = await _services.getAll(CustomerSearch);
+            model = pagingResponse.Items;
+            MetaData = pagingResponse.MetaData;
+        }
+
+        private async Task SelectedPage(int page)
+        {
+            CustomerSearch.PageNumber = page; 
+            await GetTasks();
         }
     }
 }
