@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace BlazorApp.Services
 {
@@ -19,10 +20,22 @@ namespace BlazorApp.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<CustomerAttributeModel>> getAll(CustomerSearch customerSearch)
+        public async Task<PagedList<CustomerAttributeModel>> getAll(CustomerSearch customerSearch)
         {
-            string url = $"/api/CustomerAttribute?AttributeMaster={customerSearch.AttributeMaster}";
-            var result = await _httpClient.GetFromJsonAsync<List<CustomerAttributeModel>>(url);
+            //string url = $"/api/CustomerAttribute?AttributeMaster={customerSearch.AttributeMaster}";
+            //var result = await _httpClient.GetFromJsonAsync<List<CustomerAttributeModel>>(url);
+            //return result; 
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["pageNumber"] = customerSearch.PageNumber.ToString()
+            };
+
+            if (!string.IsNullOrEmpty(customerSearch.AttributeMaster))
+            {
+                queryStringParam.Add("AttributeMaster", customerSearch.AttributeMaster);
+            }
+            string url = QueryHelpers.AddQueryString("/api/CustomerAttribute", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<PagedList<CustomerAttributeModel>>(url);
             return result;
         }
 
