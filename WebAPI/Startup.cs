@@ -28,6 +28,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ExportService>();
             string url = "server=LAPTOP-6D8AK342\\CHI;database=CustomerAttributeBlazor;uid=sa;pwd=123";
             services.AddDbContext<CustomerAttributeContext>(options =>
             {
