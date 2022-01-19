@@ -1,6 +1,7 @@
 ﻿@page "/create"
 @using BlazorApp.Models
 @using BlazorApp.Services
+@using System.ComponentModel.DataAnnotations
 @inject ICustomerService service;
 @inject NavigationManager NavigationManager;
 
@@ -28,7 +29,7 @@
   <div class="form-group">
     <label for="ShortName">ShortName</label>
     <InputText class="form-control" @bind-Value="customerCreate.ShortName"></InputText>
-    <ValidationMessage For="()=>customerCreate.ShortName"></ValidationMessage>
+    <ValidationMessage For="@(()=>customerCreate.ShortName)"></ValidationMessage>
   </div>
 
   <div class="form-group">

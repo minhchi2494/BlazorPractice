@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BlazorApp.Pages;
 
 namespace BlazorApp.Models
 {
@@ -27,8 +28,8 @@ namespace BlazorApp.Models
         [StringLength(80)]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Short Name is required")]
-        [StringLength(40)]
+        [Required]
+        [CustomValidatorAttribute()]
         public string ShortName { get; set; }
 
 
